@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <changeSet id="create table task" author="imaslov">
+        <createTable tableName="tasks">
+            <column name="id"  type="SERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name"  type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creator"  type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="executor"  type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="project"  type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="priority" type="VARCHAR(25)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="starttime" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deadline" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="TEXT">
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="tasks" baseColumnNames="creator" constraintName="fk_toCreatorUser"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="tasks" baseColumnNames="executor" constraintName="fk_toExecutorUser"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="tasks" baseColumnNames="project" constraintName="fk_toProject"
+                                 referencedTableName="project"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

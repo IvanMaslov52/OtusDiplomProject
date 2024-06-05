@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/scr-2024-02-play.iml" filepath="$PROJECT_DIR$/.idea/modules/scr-2024-02-play.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/scr-2024-02-play.db.iml" filepath="$PROJECT_DIR$/.idea/modules/scr-2024-02-play.db.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/scr-2024-02-play.di.iml" filepath="$PROJECT_DIR$/.idea/modules/scr-2024-02-play.di.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/scr-2024-02-play.scr.iml" filepath="$PROJECT_DIR$/.idea/modules/scr-2024-02-play.scr.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/scr-2024-02-play.scr-2024-02-play-build.iml" filepath="$PROJECT_DIR$/.idea/modules/scr-2024-02-play.scr-2024-02-play-build.iml" />
+    </modules>
+  </component>
+</project>

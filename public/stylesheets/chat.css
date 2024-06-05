@@ -1,0 +1,137 @@
+body {
+    font: 12px arial;
+    color: #222;
+    text-align: center;
+}
+.bodyContainer {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+form, p, span {
+    margin: 0;
+    padding: 0;
+}
+
+input {
+    font: 12px arial;
+}
+
+a {
+    color: #0000FF;
+    text-decoration: none;
+}
+
+
+
+#wrapper, #loginform {
+    margin: 0 auto;
+    padding-bottom: 25px;
+    width: 600px;
+
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+#loginform {
+    padding-top: 18px;
+}
+
+#loginform p {
+    margin: 5px;
+}
+
+#chatbox {
+    text-align: left;
+    margin: 0 auto;
+    margin-bottom: 25px;
+    padding: 10px;
+    background: #fff;
+    height: 270px;
+    width: 430px;
+    border: 1px solid #000000;
+    overflow: auto;
+}
+
+#usermsg {
+    width: 395px;
+    border: 1px solid #000000;
+}
+
+#submit {
+    width: 60px;
+}
+
+.error {
+    color: #ff0000;
+}
+
+#menu {
+    padding: 12.5px 25px 12.5px 25px;
+}
+
+.welcome {
+    float: left;
+}
+
+.logout {
+    float: right;
+}
+
+.msgln {
+    margin: 0 0 2px 0;
+}
+
+button {
+    padding: 10px 10px;
+    background-color: #333;
+    color: #fff;
+    border-radius: 5px;
+    border: none;
+    font-size: 10px;
+    cursor: pointer;
+}
+.rowDiv{
+    display: flex;
+    justify-content:safe center;
+
+}
+.display{
+    display: none;
+}
+.link {
+    color: black;
+    font-family: "Roboto Light";
+    text-decoration: none;
+}
+.imgLink {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+    margin-right: auto; /* Устанавливаем отступ справа на auto */
+    display: block;
+}
+
+.imgLink:hover {
+    outline: 2px solid black;
+}
+.inline
+{
+    vertical-align: top;
+    display: inline-block;
+    width: 300px;
+}
+.inlineButton
+{
+    vertical-align: top;
+    display: inline-block;
+}
+.linkLeft {
+    color: black;
+    font-family: "Roboto Light";
+    text-decoration: none;
+    float: left;
+}

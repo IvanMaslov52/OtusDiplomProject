@@ -1,0 +1,474 @@
+@import models.dto.ProjectUserDTO
+@(project: ProjectUserDTO)
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Task Manager</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.11.1/jquery.validate.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/project.css")">
+        <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/style.css")">
+        <script src="@routes.Assets.versioned("javascript/language.js")" type="text/javascript"> </script>
+        @*<script src="@routes.Assets.versioned("javascript/displayParticipants.js")" type="text/javascript"> </script>*@
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+        <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+        <script>
+                var role
+                var username
+                $(function () {
+                    $("#selectedElem").css("display", "none");
+                    $("#member").css("display", "none");
+                    $("#change").css("display", "none");
+                    role = "@project.role"
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '@routes.MainController.getUsername()',
+                        async: false
+                    }).always(function (data) {
+                        username = data
+                    });
+                    console.log($("#project").text())
+                    console.log(username)
+                    console.log(role)
+
+                    if (role == "lead") {
+                        $("#displayParticipants").append("<table id='myTable'  class=\"table   table-hover\">\n" +
+                                "            <thead>\n" +
+                                "            <th>Никнейм участника</th>\n" +
+                                "            <th>Роль в группе</th>\n" +
+                                "            <th>Статус</th>\n" +
+                                "            <th>Редактирование</th>\n" +
+                                "            <th>Удаление</th>\n" +
+                                "            </thead>\n" +
+                                "            <tbody></tbody>\n" +
+                                "        </table>");
+                    } else {
+                        $("#specialButton").css("display", "none");
+                        $("#displayParticipants").append("<table id='myTable'  class=\"table  table-hover\">\n" +
+                                "            <thead>\n" +
+                                "            <th>Никнейм участника</th>\n" +
+                                "            <th>Роль в группе</th>\n" +
+                                "            <th>Статус</th>\n" +
+                                "            </thead>\n" +
+                                "            <tbody></tbody>\n" +
+                                "        </table>");
+                    }
+
+
+                    $('.searchInput').bind("change keyup input click", function () {
+                        if (this.value.length >= 2) {
+                            var value = this.value;
+                            $.ajax({
+                                url: "/getUsersWithoutProjByVal",
+                                type: "POST",
+                                data: JSON.stringify({"value": value, "project": $("#project").text()}),
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json"
+                            }).always(function (data) {
+                                let str = ""
+                                for (let i = 0; i < data.length; i++) {
+                                    str += "\n <li id='" + data[i].id + "'>" + data[i].username + "</li>"
+                                }
+                                $(".searchResult").html(str).fadeIn();
+                            });
+                        }
+                    });
+                    $(".searchResult").hover(function () {
+                        $(".searchInput").blur();
+                    })
+                    $(".searchResult").on("click", "li", function () {
+                        s_user = $(this).text().trim();
+                        $('#groupMembers option[value=' + $(this).attr('id') + ']').prop('selected', true);
+
+                        if ($("#" + $(this).text().trim()).length) {
+                        } else {
+                            $('#selectedElem').append("<li id='" + $(this).text().trim() + "'> " + $(this).text().trim() + "</li>");
+                        }
+                        $("#selectedElem").css("display", "");
+                        $(".searchInput").val(s_user);
+                        $(".searchResult").fadeOut();
+
+
+                    });
+                    $("#selectedElem").on("click", "li", function () {
+                        $('#groupMembers option:contains("' + $(this).text().trim() + '")').prop('selected', false);
+                        $(this).remove();
+                        if ($("#selectedElem").children('li').length == 0) {
+
+                            $("#selectedElem").css('display', 'none');
+                        }
+                    });
+
+
+                    $("#member").on('submit', function (e) {
+                        e.preventDefault();
+                        $("#error").text("");
+                        if ($("#groupMembers").val() != null) {
+                            console.log($("#groupMembers").val())
+                            $.ajax({
+                                url: "/addUsersInProj",
+                                type: "POST",
+                                data: JSON.stringify({
+                                    "projectUsers": $("#groupMembers").val(),
+                                    "project": $("#project").text()
+                                }),
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json"
+                            }).always(function () {
+                                var table = $('#myTable').DataTable();
+                                table.clear().draw();
+                                update();
+                                $("#member").css("display", "none");
+                                $("#selectedElem").empty();
+                                $('#groupMembers option').prop('selected', false);
+                                $("#error").text("");
+                                $("#specialButton").css("display", "");
+                            });
+
+
+                        } else {
+                            $("#error").text("У вас не выбран пользователь");
+                        }
+                    });
+
+
+                    $("#change").on('submit', function (e) {
+                        e.preventDefault();
+                        $.ajax({
+                            url: "/updateUserInProj",
+                            type: "POST",
+                            data: JSON.stringify({
+                                "id": $("#formId").val(),
+                                "role": $("#formRole").val(),
+                                "position": $("#formStatus").val(),
+                                "project": $("#project").text()
+                            }),
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json"
+                        }).always(function () {
+                            var table = $('#myTable').DataTable();
+                            table.clear().draw();
+                            update();
+                            $("#change").css("display", "none");
+                            $("#specialButton").css("display", "");
+                        });
+
+
+                    });
+
+
+                    $.get("/getParticipant/" + @project.project_id,
+                            {},
+                            function (data) {
+                                if (role == "lead") {
+                                    var arr = [];
+                                    for (let i = 0; i < data.length; i++) {
+                                        if (data[i].role == "lead") {
+                                            arr.push(
+                                                    {
+                                                        "DT_RowId": data[i].user_id,
+                                                        "username": data[i].username,
+                                                        "role": data[i].role,
+                                                        "position": data[i].position,
+                                                        "redac": '',
+                                                        "delete": ''
+                                                    });
+                                        } else {
+                                            arr.push(
+                                                    {
+                                                        "DT_RowId": data[i].user_id,
+                                                        "username": data[i].username,
+                                                        "role": data[i].role,
+                                                        "position": data[i].position,
+                                                        "redac": '<button type="button" onclick="change(' + data[i].user_id + ')" class="imgButton" ><img class="icon" alt="logo_1" src="/assets/images/recycle.png"/></button>',
+                                                        "delete": '<button type="button" onclick="remove(' + data[i].user_id + ')" class="imgButton" ><img class="icon" alt="logo_1" src="/assets/images/delete.png"/></button>'
+                                                    });
+                                        }
+
+                                    }
+                                    var table = $('#myTable').DataTable(
+                                            {
+                                                "columns": [
+                                                    {
+                                                        "title": "Никнейм участника",
+                                                        "data": "username",
+                                                        "visible": true,
+                                                    },
+                                                    {
+                                                        "title": "Роль в группе", "data": "role", "visible": true,
+                                                    },
+                                                    {
+                                                        "title": "Статус", "data": "position", "visible": true,
+                                                    },
+                                                    {
+                                                        "title": "Редактирование", "data": "redac", "visible": true,
+                                                    },
+                                                    {
+                                                        "title": "Удаление", "data": "delete", "visible": true,
+                                                    }
+                                                ], "language": language(),
+                                                data: arr,
+                                                responsive: true,
+                                                "sDom": ''
+                                            });
+                                } else {
+
+                                    var arr = [];
+                                    for (let i = 0; i < data.length; i++) {
+                                        arr.push(
+                                                {
+                                                    "DT_RowId": data[i].user_id,
+                                                    "username": data[i].username,
+                                                    "role": data[i].role,
+                                                    "position": data[i].position
+                                                });
+                                    }
+                                    var table = $('#myTable').DataTable(
+                                            {
+                                                "columns": [
+                                                    {
+                                                        "title": "Никнейм участника",
+                                                        "data": "username",
+                                                        "visible": true,
+                                                    },
+                                                    {
+                                                        "title": "Роль в группе", "data": "role", "visible": true,
+                                                    },
+                                                    {
+                                                        "title": "Статус", "data": "position", "visible": true,
+                                                    }
+                                                ], "language": language(),
+                                                data: arr,
+                                                responsive: true,
+                                                "sDom": ''
+                                            });
+                                }
+                            }
+                    );
+                    $.get("/getUsersWithoutProj/" + $("#project").text(), {},
+                            function (data) {
+                                if (role == "lead") {
+                                    for (let i = 0; i < data.length; i++) {
+                                        $("#groupMembers").append('<option  value="' + data[i].id + '"> ' + data[i].username + ' </option>');
+                                    }
+                                }
+                            }
+                    );
+                    $("#specialButton").click(function () {
+                                $("#member").css("display", "");
+                                $("#change").css("display", "none");
+                                $("#specialButton").css("display", "none");
+                            }
+                    );
+                    $("#hide").click(function () {
+                                $("#member").css("display", "none");
+                                $("#selectedElem").empty();
+                                $('#groupMembers option').prop('selected', false);
+                                $("#error").text("");
+                                $("#specialButton").css("display", "");
+                            }
+                    );
+                    $("#hideChange").click(function () {
+                                $("#specialButton").css("display", "");
+                                $("#change").css("display", "none");
+                            }
+                    );
+                });
+
+                function change(id) {
+                    $("#specialButton").css("display", "none");
+                    $("#member").css("display", "none");
+                    $("#selectedElem").empty();
+                    $('#groupMembers option').prop('selected', false);
+                    $("#error").text("");
+
+                    $.ajax({
+                        url: "/getOneUserByProj",
+                        type: "POST",
+                        data: JSON.stringify({"id": id, "project": $("#project").text()}),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json"
+                    }).always(function (data) {
+                        $("#formId").val(id);
+                        $("#formLabel").text(data.username);
+                        $("#formUsername").val(data.username);
+                        $('#formRole option[value=' + data.role + ']').prop('selected', true);
+                        $('#formStatus option[value=' + data.position + ']').prop('selected', true);
+                        $("#change").css("display", "");
+                    });
+
+
+                };
+
+                function remove(id) {
+
+                    $.ajax({
+                        url: "/deleteUserFromProj",
+                        type: "POST",
+                        data: JSON.stringify({"id": id, "project": $("#project").text()}),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json"
+                    }).always(function (data) {
+                        console.log(data)
+                        var table = $('#myTable').DataTable();
+                        table.clear().draw();
+                        $("#groupMembers").append('<option  value="' + data.id + '"> ' + data.username + ' </option>');
+                        update();
+                    });
+                };
+
+
+                function update() {
+                    $.get("/getParticipant/" + @project.project_id, {},
+                            function (data) {
+                                var table = $('#myTable').DataTable();
+                                if (role == "lead") {
+                                    var arr = [];
+                                    for (let i = 0; i < data.length; i++) {
+                                        if (data[i].role == "lead") {
+                                            table.row.add(
+                                                    {
+                                                        "DT_RowId": data[i].user_id,
+                                                        "username": data[i].username,
+                                                        "role": data[i].role,
+                                                        "position": data[i].position,
+                                                        "redac": '',
+                                                        "delete": ''
+                                                    }).draw();
+                                        } else {
+                                            table.row.add(
+                                                    {
+                                                        "DT_RowId": data[i].user_id,
+                                                        "username": data[i].username,
+                                                        "role": data[i].role,
+                                                        "position": data[i].position,
+                                                        "redac": '<button type="button" onclick="change(' + data[i].user_id + ')" class="imgButton" ><img class="icon" alt="logo_1" src="/assets/images/recycle.png" /></button>',
+                                                        "delete": '<button type="button" onclick="remove(' + data[i].user_id + ')" class="imgButton" ><img class="icon" alt="logo_1" src="/assets/images/delete.png" /></button>'
+                                                    }).draw();
+                                        }
+                                    }
+                                } else {
+                                    var arr = [];
+                                    for (let i = 0; i < data.length; i++) {
+                                        table.row.add(
+                                                {
+                                                    "DT_RowId": data[i].id,
+                                                    "username": data[i].username,
+                                                    "role": data[i].role,
+                                                    "position": data[i].position
+                                                }).draw();
+                                    }
+                                }
+                            }
+                    );
+                }
+
+        </script>
+    </head>
+    <body>
+        <div class="p-2"><a class="imgLink" href="@routes.ProjectController.getProjectPage()"><img class="icon" src="@routes.Assets.versioned("images/exit.png")"></a></div>
+
+        <div class="task-container p-5">
+
+            <h1 id="project">@project.name</h1>
+                <!-- сюда передать как параметр -->
+            <div class="line p-1"></div>
+            <div class="pt-3">
+                <p class="fw-bold">Описание: </p>
+            </div>
+
+            <div class='border  border-2 rounded border-primary p-2'>@project.description</div>
+            <div class="pt-3">
+                <p class="fw-bold"> Статус группы: </p>
+                <div>@project.status</div>
+            </div>
+
+
+            <div class="pt-3">
+                <p class="fw-bold">Прогресс тасков: </p>
+            </div>
+
+            <span>Задач выполнено : 25/50</span>
+            <div class="progressionContainer">
+                <div class="progression"></div>
+            </div>
+
+            @if(project.role == "lead") {
+                <div class="rightButton"><a class="link" href="@routes.ProjectController.getUpdateProjectPage(ProjectId(project.project_id))">
+                    Изменить группу</a></div>
+            }
+            <div class="rightButton"><a class="link" href="@routes.TaskController.getCreateTaskPage(ProjectId(project.project_id))">
+                Создать таску</a></div>
+
+            <button type="button" class="imgButton" id="specialButton"><img class="icon" alt="logo_1" src="@routes.Assets.versioned("images/plus.png")"></button>
+
+            <form id="member">
+                <div>
+                    <div class="inline">
+                        <p>Введите никнейм:</p>
+                        <input ENGINE="text" name='referal' placeholder="Живой поиск" value="" class="searchInput" autocomplete="off">
+                        <ul class="searchResult"></ul>
+                    </div>
+                    <div class="inline">
+                        <p>Выбранные пользователи</p>
+                        <ul id="selectedElem">
+                        </ul>
+                        <span id="error"></span>
+                    </div>
+                </div>
+
+
+                <select id="groupMembers" name="groupMembers[]" multiple class="visible">
+                </select>
+                <div class="pt-2">
+                    <div class="inlineButton p-2">
+                        <img id="hide" class="icon" alt="logo_1" src="@routes.Assets.versioned("images/back.png")">
+                    </div>
+                    <div class="inlineButton p-2">
+                        <button class="imgButton" type="submit"><img class="icon" alt="logo_1" src="@routes.Assets.versioned("images/disc.png")"></button>
+                    </div>
+                </div>
+            </form>
+
+            <form id="change">
+
+                <div>
+                    <label id="formLabel" class="p-1 m-2"></label>
+                    <input type="hidden" id="formId" name="formId">
+                    <input type="hidden" id="formUsername" name="formUsername">
+
+                    <select class="customSelect p-1 m-1" id="formRole" name="formRole">
+                        <option value="none">none</option>
+                        <option value="backend">backend</option>
+                        <option value="frontend">frontend</option>
+                        <option value="architect">architect</option>
+                    </select>
+
+                    <select class="customSelect p-1 m-1" id="formStatus" name="formStatus">
+                        <option value="active">active</option>
+                        <option value="busy">busy</option>
+                        <option value="excluded">excluded</option>
+                        <option value="waiting">waiting</option>
+                    </select>
+                </div>
+                <div class="right">
+                    <div class="inlineButton p-2">
+                        <img id="hideChange" class="icon" alt="logo_1" src="@routes.Assets.versioned("images/back.png")">
+                    </div>
+                    <div class="inlineButton p-2">
+                        <button class="imgButton" type="submit"><img class="icon" alt="logo_1" src="@routes.Assets.versioned("images/disc.png")"></button>
+                    </div>
+                </div>
+            </form>
+            <p class="pt-3 fw-bold"> Список участников: </p>
+            <div id="displayParticipants">
+            </div>
+        </div>
+
+    </body>
+</html>

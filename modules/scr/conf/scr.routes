@@ -1,0 +1,57 @@
+GET         /                                        @controllers.AuthorizeController.getLoginPage
+# Main page scr.routes
+GET         /main                                    @controllers.MainController.getMainPage
+POST        /getUsername                             @controllers.MainController.getUsername
+# Authorization scr.routes
+GET         /login                                   @controllers.AuthorizeController.getLoginPage
+GET         /registration                            @controllers.AuthorizeController.getRegistrationPage
+POST        /login                                   @controllers.AuthorizeController.loginFormSubmit
+POST        /registration                            @controllers.AuthorizeController.registrationFormSubmit
+POST        /logout                                  @controllers.AuthorizeController.logout
+# Project page scr.routes
+GET         /project                                 @controllers.ProjectController.getProjectPage
+GET         /addProject                              @controllers.ProjectController.getAddProjectPage
+POST        /formSubmit                              @controllers.ProjectController.formSubmit
+GET         /getProjects                             @controllers.ProjectController.getProjectsByUser
+GET         /getProjectInside/:projectId             @controllers.ProjectController.getProjectInsidePage(projectId: models.ProjectId)
+GET         /getParticipant/:projectId               @controllers.ProjectController.getParticipant(projectId: models.ProjectId)
+POST        /getUsersWithoutProjByVal                @controllers.ProjectController.getUsersWithoutProjByVal
+GET         /getUsersWithoutProj/:projectName        @controllers.ProjectController.getUsersWithoutProject(projectName: models.ProjectName)
+POST        /addUsersInProj                          @controllers.ProjectController.addUserInProj
+POST        /updateUserInProj                        @controllers.ProjectController.updateUserInProj
+POST        /getOneUserByProj                        @controllers.ProjectController.getOneUserByProj
+POST        /deleteUserFromProj                      @controllers.ProjectController.deleteUserFromProj
+GET         /updateProject/:projectId                @controllers.ProjectController.getUpdateProjectPage(projectId: models.ProjectId)
+POST        /updateFormSubmit                        @controllers.ProjectController.updateFormSubmit
+# Profile
+GET         /getProfile                              @controllers.ProfileController.getProfilePage
+GET         /getFriends                              @controllers.ProfileController.getFriendsPage
+POST        /profileFromSubmit                       @controllers.ProfileController.formSubmit
+POST        /findFriends                             @controllers.ProfileController.findFriends
+POST        /findRequest                             @controllers.ProfileController.findRequest
+GET         /searchFriends/:username                 @controllers.ProfileController.searchFriends(username: models.Username)
+POST        /friendsSubmitForm                       @controllers.ProfileController.friendsFormSubmit
+POST        /acceptedRequest                         @controllers.ProfileController.acceptedRequest
+POST        /deniedRequest                           @controllers.ProfileController.deniedRequest
+POST        /deleteFriend                            @controllers.ProfileController.deleteFriend
+GET         /convChat/:username                      @controllers.ProfileController.convChat(username: models.Username)
+POST        /getMessages                             @controllers.ProfileController.getMessages
+POST        /addChat                                 @controllers.ProfileController.addChat
+# Tasks
+GET         /tasks                                   @controllers.TaskController.getTasksPage
+POST        /tasks                                   @controllers.TaskController.getAllTasksByUser
+GET         /createTask/:projectId                   @controllers.TaskController.getCreateTaskPage(projectId: models.ProjectId)
+POST        /createTask                              @controllers.TaskController.createTask
+GET         /task/:taskId                            @controllers.TaskController.getTaskPage(taskId: models.TaskId)
+GET         /updateTask/:taskId                      @controllers.TaskController.getTaskUpdatePage(taskId: models.TaskId)
+POST        /updateTask/:taskId                      @controllers.TaskController.updateTask(taskId: models.TaskId)
+GET         /findTask/:req                           @controllers.TaskController.findTaskByValue(req: models.ReqDTO)
+
+GET         /getComment/:taskId                      @controllers.TaskController.getComments(taskId: models.TaskId)
+POST        /saveComment                             @controllers.TaskController.saveComments
+
+# Tests
+# Map static resources from the /public folder to the /assets URL path
+GET         /assets/*file                            controllers.Assets.versioned(path="/public", file: Asset)
+
+

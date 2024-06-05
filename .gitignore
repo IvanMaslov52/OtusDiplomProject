@@ -1,0 +1,11 @@
+# Project exclude paths
+/modules/db/target/
+/modules/db/target/scala-2.11/classes/
+/modules/di/target/
+/modules/di/target/scala-2.11/classes/
+/modules/scr/target/
+/modules/scr/target/scala-2.11/classes/
+/project/project/target/
+/project/target/
+/target/
+/target/scala-2.11/classes/

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id="db [file:/E:/Programms/Pet%20Project/Task%20Manager/]" external.linked.project.path="$MODULE_DIR$/../../modules/db" external.root.project.path="$MODULE_DIR$/../.." external.system.id="SBT" external.system.module.type="nestedProject" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
+    <output url="file://$MODULE_DIR$/../../modules/db/target/scala-2.11/classes" />
+    <output-test url="file://$MODULE_DIR$/../../modules/db/target/scala-2.11/test-classes" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../modules/db">
+      <sourceFolder url="file://$MODULE_DIR$/../../modules/db/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../modules/db/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/../../modules/db/src/main/scala" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../modules/db/src/main/scala-2.11" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../modules/db/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="sbt: scala-sdk-2.11.5" level="project" />
+    <orderEntry type="library" name="sbt: cglib:cglib-nodep:2.2:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.typesafe:config:1.4.3:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.zaxxer:HikariCP:4.0.1:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.checkerframework:checker-qual:3.5.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.liquibase:liquibase-core:3.4.2:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.postgresql:postgresql:42.3.1:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scala-lang.modules:scala-parser-combinators_2.11:1.0.1:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scala-lang.modules:scala-xml_2.11:1.0.2:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scala-lang:scala-compiler:2.11.1:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scala-lang:scala-library:2.11.5:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scala-lang:scala-reflect:2.11.1:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scala-lang:scalap:2.11.1:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.slf4j:slf4j-api:1.7.30:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.squeryl:squeryl_2.11:0.9.5-7:jar" level="project" />
+  </component>
+</module>

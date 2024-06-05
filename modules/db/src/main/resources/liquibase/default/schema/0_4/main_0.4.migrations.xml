@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <changeSet id="create table chat" author="imaslov">
+        <createTable tableName="chat">
+            <column name="id"  type="SERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="sender"  type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="receiver"  type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message " type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="chat" baseColumnNames="sender" constraintName="fk_toSenderUser"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="chat" baseColumnNames="receiver" constraintName="fk_toReceiverUser"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>
