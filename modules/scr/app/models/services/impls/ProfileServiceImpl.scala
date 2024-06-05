@@ -17,7 +17,8 @@ class ProfileServiceImpl @Inject()(friendsRepository: FriendsRepository, userRep
   }
 
   override def searchFriends(user_id: Int, username: String): List[User] = {
-    userRepository.searchByUsername(username).filter(res => friendsRepository.existFriends(user_id,res.id))
+    val result = userRepository.searchByUsername(username).filter(_.id != user_id)
+    result.filterNot(friendsRepository.searchFriendsByVal(user_id,username).contains)
   }
 
   override def makeRequest(user_id: Int, username: String): Unit = {
