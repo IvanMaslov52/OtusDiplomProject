@@ -14,5 +14,5 @@ trait TaskService {
 
   def updateTask(taskId: Int,dto: TaskUpdateDTO):Unit
 
-  def findTaskByString(req: String): List[Task]
+  def findTaskByString(req: String): List[TaskDTO]
 }

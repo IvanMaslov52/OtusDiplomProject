@@ -46,11 +46,8 @@ GET         /task/:taskId                            @controllers.TaskController
 GET         /updateTask/:taskId                      @controllers.TaskController.getTaskUpdatePage(taskId: models.TaskId)
 POST        /updateTask/:taskId                      @controllers.TaskController.updateTask(taskId: models.TaskId)
 GET         /findTask/:req                           @controllers.TaskController.findTaskByValue(req: models.ReqDTO)
-
 GET         /getComment/:taskId                      @controllers.TaskController.getComments(taskId: models.TaskId)
 POST        /saveComment                             @controllers.TaskController.saveComments
-
-# Tests
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                            controllers.Assets.versioned(path="/public", file: Asset)
 

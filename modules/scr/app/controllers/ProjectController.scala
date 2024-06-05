@@ -72,7 +72,7 @@ class ProjectController @Inject()(projectService: ProjectService, userService: U
       user <- authService.getUserForToken(token)
       project <- projectService.getProjectById(user.id, projectId.raw)
     } yield Ok(views.html.projectInside(project))
-    result.getOrElse(Ok(views.html.project()))
+    result.getOrElse(Ok(views.html.error("Проект не найден")))
   }
 
   def getParticipant(projectId: ProjectId): Action[AnyContent] = Authenticated {

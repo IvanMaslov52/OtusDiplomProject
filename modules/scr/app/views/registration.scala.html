@@ -18,7 +18,7 @@
             @helper.inputText(form("username"))(views.fieldsConstructors.bFieldConstructor, lang)
             <label>password</label>
             <input type="password" class="form-control" value="@form("password").value" name="password" />
-            <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+            <button type="submit" class="btn btn-primary mt-3">Зарегистрироваться</button>
             <p class="p-1">
                 У вас уже есть аккаунт? - <a href="@routes.AuthorizeController.getLoginPage()">Авторизируйтесь</a>
             </p>

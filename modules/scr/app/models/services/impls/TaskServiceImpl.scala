@@ -50,5 +50,13 @@ class TaskServiceImpl @Inject()(taskRepository: TaskRepository, projectRepositor
       formatterInput.parse(dto.starttime), formatterInput.parse(dto.deadline), dto.description))
   }
 
-  override def findTaskByString(req: String): List[Task] = taskRepository.findTaskByString(req)
+  override def findTaskByString(req: String): List[TaskDTO] = taskRepository.findTaskByString(req).map { task =>
+    val result = for {
+      creator <- userRepository.find(task.creator)
+      project <- projectRepository.find(task.project)
+      executor <- userRepository.find(task.executor)
+    } yield TaskDTO(task.id, task.name, creator.username, project.name, executor.username, task.priority,
+      formatterInput.format(task.starttime), formatterInput.format(task.deadline), task.description)
+    result.getOrElse(TaskDTO())
+  }
 }

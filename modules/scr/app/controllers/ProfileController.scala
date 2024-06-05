@@ -105,7 +105,7 @@ class ProfileController @Inject()(authService: AuthService, userService: UserSer
       req.body.asFormUrlEncoded.get("denied").foreach(profileService.deniedRequest(user.id, _))
       Ok(views.html.friends(user, friendForm))
     }
-    result.getOrElse(Forbidden)
+    result.getOrElse(Ok(views.html.error("Ошибка во время отклонения запроса не удалось")))
   }
 
   def acceptedRequest = Authenticated { implicit req =>
@@ -116,7 +116,7 @@ class ProfileController @Inject()(authService: AuthService, userService: UserSer
       req.body.asFormUrlEncoded.get("accepted").foreach(profileService.acceptedRequest(user.id, _))
       Ok(views.html.friends(user, friendForm))
     }
-    result.getOrElse(Forbidden)
+    result.getOrElse(Ok(views.html.error("Ошибка в результате выполнения принятия запроса")))
   }
 
   def deleteFriend = Authenticated { implicit req =>
@@ -127,7 +127,7 @@ class ProfileController @Inject()(authService: AuthService, userService: UserSer
       req.body.asFormUrlEncoded.get("username").foreach(profileService.deleteFriend(user.id, _))
       Ok(views.html.friends(user, friendForm))
     }
-    result.getOrElse(Forbidden)
+    result.getOrElse(Ok(views.html.error("Ошибка во время удаления друга")))
   }
 
   def convChat(username: Username) = Authenticated { implicit req =>
@@ -138,7 +138,7 @@ class ProfileController @Inject()(authService: AuthService, userService: UserSer
     } yield {
       Ok(views.html.chat(dto))
     }
-    result.getOrElse(Forbidden)
+    result.getOrElse(Ok(views.html.error("Ошибка во время отображения чата")))
   }
 
   def getMessages = Authenticated(parse.json[String]) { implicit req =>

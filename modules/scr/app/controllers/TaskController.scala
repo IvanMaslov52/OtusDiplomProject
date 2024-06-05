@@ -2,6 +2,7 @@ package controllers
 
 import auth.Authenticated
 import com.google.inject.Inject
+import controllers.Assets.Ok
 import models.{CommentDTO, ProjectId, ReqDTO, TaskId}
 import models.dao.Task
 import models.dto.{CreateTaskDTO, TaskUpdateDTO}
@@ -37,7 +38,7 @@ class TaskController @Inject()(authService: AuthService, taskService: TaskServic
       token <- request.session.get("token")
       user <- authService.getUserForToken(token)
     } yield Ok(views.html.taskCreate(user, projectId.raw))
-    result.getOrElse(Forbidden)
+    result.getOrElse(Ok(views.html.error("Пользователь не найден")))
   }
 
   def createTask = Authenticated(parse.json[CreateTaskDTO]) { request =>
@@ -49,7 +50,7 @@ class TaskController @Inject()(authService: AuthService, taskService: TaskServic
     val result = for {
       task <- taskService.getTaskById(taskId.raw)
     } yield Ok(views.html.taskUpdate(task))
-    result.getOrElse(NotFound)
+    result.getOrElse(Ok(views.html.error("Задача не найдена")))
   }
 
   def getTaskPage(taskId: TaskId) = Authenticated {
