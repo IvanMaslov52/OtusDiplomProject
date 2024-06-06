@@ -10,6 +10,6 @@ trait FriendsRepository extends CrudRepository[CompositeKey2[Int, Int], Friends]
 
   def findRequest(user_id: Int): List[User]
 
-  def searchFriendsByVal(user_id: Int, username: String): List[User]
+  def usersExist(user_id: Int, target_id: Int): Boolean
 
 }

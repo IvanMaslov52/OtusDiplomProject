@@ -25,11 +25,13 @@ class FriendsRepositoryImpl extends FriendsRepository {
     ).toList
   }
 
-  override def searchFriendsByVal(user_id: Int, username: String): List[User] = transaction {
-    join(Friends.friends, User.users)((f, u) =>
-      where(f.friends_id <> user_id and f.user_id <> user_id and (u.username like "%" + username + "%"))
-        select User(f.user_id, u.login, u.username, u.password)
-        on (f.user_id === u.id)
-    ).toList
-  }
+  override def usersExist(user_id: Int, target_id: Int): Boolean =
+    transaction {
+      from(defaultTable)(f =>
+        where((f.user_id === user_id and f.friends_id === target_id) or (f.user_id === target_id and f.friends_id === user_id))
+          select (f)
+      ).headOption.isDefined
+    }
+
+
 }
