@@ -1,11 +1,9 @@
 package models.repository.impls
 
-import models.dao.{Project, Task, User}
-import models.dto.TaskDTO
+import models.dao.Task
 import models.repository.TaskRepository
 import org.squeryl.Table
 
-import java.sql.Date
 
 
 class TaskRepositoryImpl extends TaskRepository {

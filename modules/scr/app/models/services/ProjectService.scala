@@ -1,6 +1,6 @@
 package models.services
 
-import models.{ProjectId, ProjectName}
+import models.ProjectId
 import models.dao.Project
 import models.dto.{AddProjectUsersDTO, ProjectUserDTO, UpdateUserDTO, UserIdDTO, UserProjectDTO}
 

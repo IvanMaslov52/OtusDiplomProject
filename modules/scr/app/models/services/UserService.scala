@@ -1,8 +1,8 @@
 package models.services
 
-import models.{ProjectName, UserId}
+import models.UserId
 import models.dao.User
-import models.dto.{SearchDTO, UserIdDTO, UserProjectDTO}
+import models.dto.SearchDTO
 
 trait UserService {
   def existUser(username: String): Boolean

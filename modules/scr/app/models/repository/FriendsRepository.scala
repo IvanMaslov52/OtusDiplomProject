@@ -1,7 +1,6 @@
 package models.repository
 
 import models.dao.{Friends, User}
-import models.dto.{FriendsDTO, FriendsForm}
 import org.squeryl.dsl.CompositeKey2
 
 trait FriendsRepository extends CrudRepository[CompositeKey2[Int, Int], Friends] {

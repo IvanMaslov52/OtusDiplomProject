@@ -2,7 +2,6 @@ package models.dto
 
 import play.api.libs.json.{Json, Reads, Writes}
 
-import java.time.LocalDate
 
 case class TaskDTO(id: Int = 0, name: String = "", creator: String = "", project: String = "", executor: String = "",
   priority: String = "", starttime: String = "",

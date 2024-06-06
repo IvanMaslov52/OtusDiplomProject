@@ -1,7 +1,6 @@
 package models.repository.impls
 
 import models.dao.{Friends, User}
-import models.dto.{FriendsDTO, FriendsForm}
 import models.repository.FriendsRepository
 import org.squeryl.Table
 

@@ -1,8 +1,8 @@
 package models.services.impls
 
-import models.{ProjectName, UserId}
+import models.UserId
 import models.dao.User
-import models.dto.{SearchDTO, UserIdDTO, UserProjectDTO}
+import models.dto.SearchDTO
 import models.repository.{ProjectRepository, ProjectUserRepository, UserRepository}
 import models.services.UserService
 

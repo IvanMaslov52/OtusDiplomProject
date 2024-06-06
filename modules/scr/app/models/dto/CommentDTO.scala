@@ -1,6 +1,5 @@
 package models
 
-import models.dao.Task
 import play.api.libs.json.Json
 
 case class CommentDTO(creator: String, task: Int, description: String)

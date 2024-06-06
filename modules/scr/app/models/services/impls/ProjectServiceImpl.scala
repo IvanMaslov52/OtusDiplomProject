@@ -1,7 +1,7 @@
 package models.services.impls
 
 import com.google.inject.Inject
-import models.{ProjectId, ProjectName}
+import models.ProjectId
 import models.dao.{Project, ProjectUser}
 import models.dto.{AddProjectUsersDTO, ProjectUserDTO, UpdateUserDTO, UserIdDTO, UserProjectDTO}
 import models.repository.{ProjectRepository, ProjectUserRepository}
